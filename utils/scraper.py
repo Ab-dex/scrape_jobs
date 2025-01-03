@@ -13,9 +13,7 @@ def extract_unique_links(data):
     for url in data:
         
 
-        # Remove query strings and rebuild the URL without the query part
-        parsed_url = urlparse(url)
-        sanitized_url = urlunparse(parsed_url._replace(query=""))
+        sanitized_url = data[i].split("?")[0]
 
         # Extract the base URL based on specific path segments
         if "/job" in sanitized_url:
