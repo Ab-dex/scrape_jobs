@@ -9,14 +9,25 @@ def extract_unique_links(data):
     Extracts unique base URLs from a list of links.
     """
     unique_links = set()
-    for i in range(len(data)):
-        if "/job" in data[i]:
-            url_home = data[i].split("/job")[0]
-        elif "/detail" in data[i]:
-            url_home = data[i].split("/detail")[0]
+
+    for url in data:
+        
+
+        # Remove query strings and rebuild the URL without the query part
+        parsed_url = urlparse(url)
+        sanitized_url = urlunparse(parsed_url._replace(query=""))
+
+        # Extract the base URL based on specific path segments
+        if "/job" in sanitized_url:
+            url_home = sanitized_url.split("/job")[0]
+        elif "/detail" in sanitized_url:
+            url_home = sanitized_url.split("/detail")[0]
         else:
-            url_home = data[i]
+            url_home = sanitized_url
+
+        # Add the sanitized URL to the set
         unique_links.add(url_home)
+
     return unique_links
 
 def scrape_google_results(params, headers):
